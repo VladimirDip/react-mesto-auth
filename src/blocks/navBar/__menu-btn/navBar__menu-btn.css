@@ -1,0 +1,10 @@
+.navBar__menu-btn {
+    all: unset;
+
+}
+
+@media screen and (min-width: 431px) {
+    .navBar__menu-btn {
+        display: none;
+    }
+}

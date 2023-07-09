@@ -1,0 +1,12 @@
+.popup__input-field {
+    font-family: 'Inter', Arial, sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1;
+    margin-bottom: 40px;
+    padding: 0;
+}
+
+.popup__input-field:nth-last-of-type(1) {
+    margin-bottom: 48px;
+}

@@ -1,0 +1,7 @@
+.popup__input-form_type_error {
+    border-bottom: var(--color-red) solid 1px;
+    /*outline: var(--color-red) solid 2px;*/
+    /*border-radius: 4px;*/
+
+}
+

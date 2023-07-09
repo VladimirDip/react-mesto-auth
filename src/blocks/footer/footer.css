@@ -1,0 +1,5 @@
+.footer {
+    width: 100%;
+
+    max-width: var(--main-width-container);
+}

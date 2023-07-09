@@ -1,0 +1,11 @@
+.startPage__input-error {
+
+    color: var(--color-red);
+    margin: 5px 0 0;
+    max-width: 358px;
+    display: block;
+    padding: 0;
+    height: 28px;
+    line-height: 14.5px;
+    font-size: 12px;
+}

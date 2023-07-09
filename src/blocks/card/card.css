@@ -1,0 +1,21 @@
+.card {
+    background-color: var(--color-white);
+    color: var(--color-black);
+    width: 282px;
+    height: 361px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-areas:
+        "image image image"
+        "title title button";
+    grid-template-rows: min-content auto;
+    grid-template-columns: 2fr 2fr 1fr;
+    align-items: center;
+
+    position: relative;
+
+
+
+
+
+}

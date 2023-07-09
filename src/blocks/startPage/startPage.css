@@ -1,0 +1,11 @@
+.startPage {
+    margin: 0 auto;
+    max-width: 358px;
+}
+
+@media screen and (max-width: 430px) {
+    .startPage {
+        margin-bottom: 50px;
+        width: 260px;
+    }
+}

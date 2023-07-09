@@ -1,0 +1,12 @@
+.page__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-rows: min-content auto min-content;
+    grid-template-columns: minmax(max-content,880px);
+    justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+
+
+}
