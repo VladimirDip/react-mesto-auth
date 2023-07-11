@@ -32,6 +32,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, buttonText, disable }) {
       isValid={isValid}
       onSubmit={onSubmit}
       isDisable={disable}
+      values={values}
     >
       <label className="popup__input-field" htmlFor="name">
         <input

@@ -19,13 +19,14 @@ function EditAvatarPopup({
     });
   }
 
-  const { handleChange, isValid, errors, values } = useFormValidation({
+  const { handleChange, isValid, errors, values, reset } = useFormValidation({
     isOpen,
   });
 
   useEffect(() => {
     if (isOpen) {
       avatarRef.current.value = "";
+      reset();
     }
   }, [isOpen]);
 
@@ -39,6 +40,7 @@ function EditAvatarPopup({
       onSubmit={onSubmit}
       isValid={isValid}
       isDisable={disable}
+      values={values}
     >
       <label className="popup__input-field" htmlFor="link">
         <input

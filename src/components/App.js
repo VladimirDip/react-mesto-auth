@@ -21,6 +21,7 @@ import Register from "./auth/Register";
 
 import * as Auth from "../Auth";
 import CurrentUserContext from "../contexts/CurrentUserContext";
+import { auth } from "../Auth";
 
 function App() {
   // console.log("Render main page");
@@ -51,7 +52,7 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
-  const [isDisable, setIsDisable] = useState(false);
+  const [isDisable, setIsDisable] = useState(true);
   const [isLoadingButton, setIsLoadingButton] = useState(false);
   const [selectedCard, setSelectedCard] = useState({
     name: "",
@@ -70,10 +71,10 @@ function App() {
   const [showToolTip, setShowToolTip] = useState(false);
   const [checkToken, setCheckToken] = useState(false);
 
-  const ChooseInfoTooltip = (info) => {
+  const chooseInfoTooltip = (info) => {
     setInfo({ image: info.image, text: info.text });
   };
-  const [currentUser, setCurrentUser] = useState("");
+  const [currentUser, setCurrentUser] = useState({});
 
   /*End States*/
 
@@ -190,46 +191,67 @@ function App() {
   }
 
   function registration({ email, password }) {
-    Auth.register(email, password)
+    setIsDisable(true);
+    auth
+      .register(email, password)
       .then((response) => {
-        setTimeout(setShowToolTip, 1000, true);
-        ChooseInfoTooltip({
+        setShowToolTip(true);
+        chooseInfoTooltip({
           image: success,
           text: "Вы успешно зарегистрировались",
         });
-        setTimeout(navigate, 2000, "/sign-in");
+        navigate("/sign-in");
         setEmail(email);
+        setIsDisable(false);
       })
       .catch((err) => {
-        setTimeout(setShowToolTip, 500, true);
-        ChooseInfoTooltip({
+        setShowToolTip(true);
+        chooseInfoTooltip({
           image: error,
           text: "Что-то пошло не так! Попробуйте еще раз!",
         });
+        console.log(err);
+      })
+      .finally(() => {
+        setIsDisable(false);
       });
   }
 
   function authorization({ email, password }) {
-    Auth.authorize(email, password).then((data) => {
-      if (!data) {
+    setIsDisable(true);
+    auth
+      .authorize(email, password)
+      .then((data) => {
+        console.log(data);
+
+        setLoggedIn(true);
+        navigate("/");
+        setIsDisable(false);
+        console.log(data);
+        localStorage.setItem("jwt", data.token);
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+        setIsDisable(false);
         setLoggedIn(false);
-        setTimeout(setShowToolTip, 500, true);
-        ChooseInfoTooltip({
+        setShowToolTip(true);
+
+        chooseInfoTooltip({
           image: error,
           text: "Что-то пошло не так! Попробуйте еще раз!",
         });
-      } else {
-        setLoggedIn(true);
-        navigate("/");
-      }
-    });
+      })
+      .finally(() => {
+        setIsDisable(false);
+      });
   }
 
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
     if (jwt) {
       setCheckToken(true);
-      Auth.tokenCheck(jwt)
+      auth
+        .tokenCheck(jwt)
         .then((res) => {
           setLoggedIn(true);
           navigate("/");
@@ -248,24 +270,26 @@ function App() {
   }
 
   useEffect(() => {
-    Promise.all([api.getUserData(), api.getInitialCards()])
-      .then(([userData, cardsData]) => {
-        const { name: name, about: description, ...rest } = userData;
-        const card = cardsData.map((item) => {
-          return {
-            src: item.link,
-            name: item.name,
-            likes: item.likes,
-            _id: item._id,
-            owner: item.owner,
-          };
-        });
+    if (loggedIn) {
+      Promise.all([api.getUserData(), api.getInitialCards()])
+        .then(([userData, cardsData]) => {
+          const { name: name, about: description, ...rest } = userData;
+          const card = cardsData.map((item) => {
+            return {
+              src: item.link,
+              name: item.name,
+              likes: item.likes,
+              _id: item._id,
+              owner: item.owner,
+            };
+          });
 
-        setCards(card);
-        setCurrentUser({ name, description, ...rest });
-      })
-      .catch(console.error);
-  }, []);
+          setCards(card);
+          setCurrentUser({ name, description, ...rest });
+        })
+        .catch(console.error);
+    }
+  }, [loggedIn]);
 
   return (
     <div className="page__container">
@@ -276,11 +300,15 @@ function App() {
         <Routes>
           <Route
             path="/sign-up"
-            element={<Register registration={registration} />}
+            element={
+              <Register registration={registration} isDisabled={isDisable} />
+            }
           />
           <Route
             path="/sign-in"
-            element={<Login authorization={authorization} />}
+            element={
+              <Login authorization={authorization} isDisabled={isDisable} />
+            }
           />
 
           <Route
@@ -343,6 +371,7 @@ function App() {
               loggedIn ? <Navigate to="/" /> : <Navigate to="/sign-in" />
             }
           />
+          <Route path="*" element={<Navigate to="/sign-in" />} />
         </Routes>
         <InfoToolTip
           isOpen={showToolTip}

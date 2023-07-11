@@ -43,6 +43,7 @@ function EditProfilePopup({
       onSubmit={onSubmit}
       isValid={isValid}
       isDisable={disable}
+      values={values}
     >
       <label className="popup__input-field" htmlFor="name">
         <input

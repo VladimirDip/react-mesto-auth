@@ -1,15 +1,15 @@
 import React from "react";
 import useFormValidation from "../../hooks/useFormValidation";
 
-function Login({ authorization }) {
-  const { handleChange, errors, values } = useFormValidation();
+function Login({ authorization, isDisabled }) {
+  const { handleChange, errors, values, isValid } = useFormValidation();
 
   function handleSubmit(e) {
     e.preventDefault();
     const dataUser = {};
     dataUser.email = values.email;
     dataUser.password = values.password;
-    console.log(dataUser);
+
     authorization(dataUser);
   }
 
@@ -53,7 +53,12 @@ function Login({ authorization }) {
         <button
           type="submit"
           aria-label="saveButton"
-          className="startPage__button "
+          className={`${
+            isValid
+              ? "startPage__button"
+              : "startPage__button startPage__button_inactive"
+          }`}
+          disabled={!isValid}
         >
           Войти
         </button>

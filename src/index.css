@@ -72,6 +72,7 @@
 @import url('./blocks/startPage/__button/startPage__button.css');
 @import url('./blocks/startPage/__button/_span/startPage__button_span.css');
 @import url('./blocks/startPage/__button/_link/startPage__button_link.css');
+@import url('./blocks/startPage/__button/_inactive/startPage__button_inactive.css');
 
 /*Cards*/
 @import url('./blocks/cards/cards.css');

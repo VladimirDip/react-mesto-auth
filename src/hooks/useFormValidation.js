@@ -30,8 +30,8 @@ export default function useFormValidation() {
   const reset = (data = {}) => {
     setValues(data);
     setErrors({});
-    setIsInputValid({});
-    setIsValid({});
+    setIsInputValid([]);
+    setIsValid(false);
   };
 
   const setValue = useCallback((name, value) => {

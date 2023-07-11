@@ -1,4 +1,3 @@
-import "../../index.css";
 import CloseByEsc from "../../hooks/CloseByEsc";
 
 const PopupWithForm = ({
@@ -11,10 +10,12 @@ const PopupWithForm = ({
   onSubmit,
   isValid,
   isDisable,
+  values,
 }) => {
   // console.log(name, title, isOpen, onClose, children);
 
   CloseByEsc({ isOpen, onClose });
+  // console.log(isValid);
 
   return (
     <div>
@@ -36,10 +37,10 @@ const PopupWithForm = ({
               aria-label="saveButton"
               className={`${
                 isValid
-                  ? "popup__button"
+                  ? "popup__button "
                   : "popup__button popup__button_inactive"
               }`}
-              disabled={isDisable}
+              disabled={!isValid}
             >
               {textSubmit}
             </button>

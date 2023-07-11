@@ -1,0 +1,8 @@
+.startPage__button_inactive {
+    color: black;
+    background: var(--color-white);
+    opacity: 0.8;
+    border: 2px solid #000000;
+    pointer-events: none;
+    user-select: none;
+}
